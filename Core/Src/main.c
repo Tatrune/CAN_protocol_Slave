@@ -144,15 +144,15 @@ int main(void)
   		Error_Handler();
   	}
 
-  	TxHeader.DLC = 4;  // data length
+  	TxHeader.DLC = 4;  // Data length
   	TxHeader.IDE = CAN_ID_STD;
   	TxHeader.RTR = CAN_RTR_DATA;
   	TxHeader.StdId = 0x103;  // ID
 
   	RxHeader.DLC = 4;
 
-  	TxData[0] = 50; // ms delay
-  	TxData[1] = 20; // loop rep
+  	TxData[0] = 50; // Delay (ms)
+  	TxData[1] = 20; // Numbers of Loop
 
 
   	/* Infinite loop */
@@ -233,10 +233,6 @@ int main(void)
     // blink the LED
     if(datacheck)
     {
-
-		HAL_Delay(500);
-
-		// kiem tra chuyen data
 		for (int i = 0; i < RxData[1]; i++)
 		{
 			HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14); // green led
@@ -244,21 +240,21 @@ int main(void)
 		}
 		datacheck = 0;
 
-	  	TxData[0] = 50; // ms delay
-	  	TxData[1] = 20; // loop rep
+	  	TxData[0] = 50; // Delay (ms)
+	  	TxData[1] = 20; // Numbers of Loop
 
 	  	// uint8t to char
-	  	sprintf(temp, "Gia tri cua nhiet do = %d\r\n", RxData[2]);
-	  	sprintf(humi, "Gia tri cua do am = %d\r\n", RxData[3]);
+	  	sprintf(temp, "Value of Temperature = %d\r\n", RxData[2]);
+	  	sprintf(humi, "Value of Humidity = %d\r\n", RxData[3]);
 
-	  	// truyen uart
+	  	// Send Uart
 		HAL_UART_Transmit(&huart5, temp , strlen(temp) , HAL_MAX_DELAY);
 		HAL_UART_Transmit(&huart5, humi , strlen(humi) , HAL_MAX_DELAY);
 
 		HAL_Delay(500);
 
 
-	  	if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)  // Add
+	  	if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)  //add data to the transmission frame
 		{
 			Error_Handler();
 	  	}
